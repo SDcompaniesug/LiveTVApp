@@ -3,57 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg">
+    android:background="@color/app_black">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:paddingStart="18dp"
-        android:paddingEnd="18dp">
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
         <TextView
-            android:id="@+id/logo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="LIVE TV"
-            android:textColor="@color/text"
-            android:textSize="22sp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/liveBadge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="● LIVE"
-            android:textColor="@color/brand"
-            android:textStyle="bold"/>
+            android:text="Live TV"
+            android:textColor="#F2F2F2"
+            android:textSize="24sp" />
+        <ImageView
+            android:id="@+id/liveSearchButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="9dp"
+            android:src="@drawable/ic_search"
+            android:tint="#EEEEEE"
+            android:contentDescription="Search channels"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/sectionTitle"
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Channels"
-        android:textColor="@color/text"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:paddingStart="18dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="10dp"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/channelList"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="10dp">
+        <LinearLayout
+            android:id="@+id/channelFilters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:clipToPadding="false"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@color/surface">
-        <TextView android:id="@+id/homeTab" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Home" android:textColor="@color/brand" android:textStyle="bold"/>
-        <TextView android:id="@+id/favoritesTab" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Favorites" android:textColor="@color/muted"/>
-        <TextView android:id="@+id/settingsTab" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:gravity="center" android:text="Settings" android:textColor="@color/muted"/>
-    </LinearLayout>
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/channelsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="14dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="12dp"
+            android:overScrollMode="never" />
+        <ProgressBar
+            android:id="@+id/channelsLoading"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/app_color"
+            android:visibility="gone" />
+        <TextView
+            android:id="@+id/channelsEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="24dp"
+            android:text="No channels available"
+            android:textColor="@color/text_color_light"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>
