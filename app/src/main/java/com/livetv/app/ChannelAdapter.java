@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,13 +15,23 @@ import java.util.Set;
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.Holder> {
     public interface Listener { void onChannelClick(Channel channel); }
 
-    private final List<Channel> channels;
+    private final List<Channel> channels = new ArrayList<>();
     private final Listener listener;
     private final Set<String> favorites = new HashSet<>();
 
     public ChannelAdapter(List<Channel> channels, Listener listener) {
-        this.channels = channels;
+        this.channels.addAll(channels);
         this.listener = listener;
+    }
+
+    public void setChannels(List<Channel> updated) {
+        channels.clear();
+        channels.addAll(updated);
+        notifyDataSetChanged();
+    }
+
+    public Set<String> getFavorites() {
+        return new HashSet<>(favorites);
     }
 
     @NonNull @Override
@@ -34,19 +45,19 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.Holder> 
         h.name.setText(channel.name);
         h.category.setText(channel.category);
         h.logo.setImageResource(R.drawable.default_image);
-        h.favorite.setImageResource(favorites.contains(channel.name)
-                ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
+        updateFavoriteIcon(h.favorite, channel.name);
 
         h.itemView.setOnClickListener(v -> listener.onChannelClick(channel));
         h.favorite.setOnClickListener(v -> {
-            if (favorites.contains(channel.name)) {
-                favorites.remove(channel.name);
-                h.favorite.setImageResource(R.drawable.ic_heart_outline);
-            } else {
-                favorites.add(channel.name);
-                h.favorite.setImageResource(R.drawable.ic_heart_filled);
-            }
+            if (!favorites.add(channel.name)) favorites.remove(channel.name);
+            updateFavoriteIcon(h.favorite, channel.name);
         });
+    }
+
+    private void updateFavoriteIcon(ImageView image, String name) {
+        image.setImageResource(favorites.contains(name)
+                ? R.drawable.ic_heart_filled : R.drawable.ic_heart_outline);
+        image.setContentDescription(favorites.contains(name) ? "Remove favorite" : "Add favorite");
     }
 
     @Override public int getItemCount() { return channels.size(); }
